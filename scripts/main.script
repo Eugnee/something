@@ -1,0 +1,49 @@
+-- some glogal things here
+C = require "scripts.constants"
+M = require "scripts.messages"
+math.randomseed(socket.gettime())
+
+local function unload_level(self)
+    msg.post('#' .. self.current_level, M.RELEASE_INPUT_FOCUS)
+    msg.post('#' .. self.current_level, M.UNLOAD)
+end
+
+local function load_level(self)
+    msg.post('#' .. self.current_level, M.LOAD)
+    msg.post('#' .. self.current_level, M.ACQUIRE_INPUT_FOCUS)
+end
+
+local function pause_level(self)
+    msg.post('#' .. self.current_level, "set_time_step", {
+        factor = 0,
+        mode = 0
+    })
+    msg.post('#' .. self.current_level, M.RELEASE_INPUT_FOCUS)
+end
+
+local function unpause_level(self)
+    msg.post('#' .. self.current_level, "set_time_step", {
+        factor = 1,
+        mode = 1
+    })
+    msg.post('#' .. self.current_level, M.ACQUIRE_INPUT_FOCUS)
+end
+
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+    -- sound.play("/controller#main_theme")
+    self.current_level = "prolog"
+    load_level(self)
+end
+
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("proxy_loaded") then
+        msg.post(sender, M.ENABLE)
+    elseif message_id == hash("load_level") then
+        unload_level(self)
+        self.current_level = message.level
+        load_level(self)
+    end
+end

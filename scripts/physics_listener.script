@@ -1,0 +1,28 @@
+local OM = require "scripts.logic.gobject"
+
+
+local function physics_world_listener(self, event, data)
+    if event == hash("contact_point_event") then
+        local a = OM.get_unit(data.a.id)
+        local b = OM.get_unit(data.b.id)
+        a.speed = a.speed + 0.1
+        -- a.position = a.position + data.distance * a.position
+        -- b.position = b.position + data.distance * b.position
+    elseif event == hash("collision_event") then
+        -- Handle general collision data
+        -- pprint(data)
+    elseif event == hash("trigger_event") then
+        -- Handle trigger interaction data
+        -- pprint(data)
+    elseif event == hash("ray_cast_response") then
+        -- Handle raycast hit data
+        -- pprint(data)
+    elseif event == hash("ray_cast_missed") then
+        -- Handle raycast miss data
+        pprint(data)
+    end
+end
+
+function init(self)
+    physics.set_listener(physics_world_listener)
+end
