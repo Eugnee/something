@@ -3,16 +3,12 @@ local OM = {}
 -- map of Game Objects
 local GOBJECTS = {}
 
----comment
----@param id hash
-function OM.create_unit(id, unit)
-    GOBJECTS[id] = unit
+function OM.create_gobject(data)
+    GOBJECTS[go.get_id()] = data
 end
 
----comment
----@param id hash
-function OM.delete_unit(id)
-    GOBJECTS[id] = nil
+function OM.delete_gobject()
+    GOBJECTS[go.get_id()] = nil
 end
 
 ---comment
