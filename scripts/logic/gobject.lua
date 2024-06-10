@@ -5,10 +5,8 @@ local GOBJECTS = {}
 
 ---comment
 ---@param id hash
-function OM.create_unit(id)
-    local unit = {}
+function OM.create_unit(id, unit)
     GOBJECTS[id] = unit
-    return unit
 end
 
 ---comment

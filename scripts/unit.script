@@ -2,20 +2,19 @@ local OM = require "scripts.logic.gobject"
 local utils = require "scripts.lib.utils"
 
 function init(self)
-    local unit = OM.create_unit(go.get_id())
-    unit.speed = 1
-    unit.position = go.get_position()
+    OM.create_unit(go.get_id(), self)
+    self.speed = 1
+    self.hp = 30
 end
 
 function update(self, dt)
-    local unit = OM.get_unit(go.get_id())
-    if not unit.destination then
-        unit.destination = utils.random_pos(100, unit.position)
+    local position = go.get_position()
+    if not self.destination then
+        self.destination = utils.random_pos(100)
     end
-    if vmath.length(unit.position) - vmath.length(unit.destination) < 10 then
-        unit.destination = nil
+    if vmath.length(position) - vmath.length(self.destination) < 10 then
+        self.destination = nil
         return
     end
-    unit.position = unit.position + unit.destination * dt * unit.speed;
-    go.set_position(unit.position)
+    go.set_position(position + self.destination * dt * self.speed)
 end
