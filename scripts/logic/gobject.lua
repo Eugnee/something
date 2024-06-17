@@ -5,6 +5,7 @@ local GOBJECTS = {}
 
 function OM.create_gobject(data)
     GOBJECTS[go.get_id()] = data
+    data.url = msg.url()
 end
 
 function OM.delete_gobject()
@@ -13,7 +14,7 @@ end
 
 ---comment
 ---@param id any
-function OM.get_unit(id)
+function OM.get_gobject(id)
     return GOBJECTS[id]
 end
 

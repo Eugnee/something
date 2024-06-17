@@ -1,19 +1,25 @@
 local utils = require "scripts.lib.utils"
-
+local hero_state = require "scripts.logic.hero"
 
 function init(self)
-    camera.acquire_focus("/camera#camera")
-    msg.post("@render:", "use_camera_projection")
-    -- go.set("#camera", "orthographic_zoom", 2)
     go.set_position(vmath.vector3(), "/go#camera")
-    for i = 1, 300 do
-        factory.create("/base/factories#unit", utils.random_pos(200))
+
+    local objs = collectionfactory.create("/base/factories#hero")
+    local camera_name = objs[hash("/camera")]
+    camera.acquire_focus(camera_name)
+    msg.post("@render:", "use_camera_projection")
+    hero_state["ENEMIES_COUNTER"] = 0
+    for i = 1, 30 do
+        factory.create("/base/factories#enemy", utils.random_pos(200))
+        hero_state["ENEMIES_COUNTER"] = hero_state["ENEMIES_COUNTER"] + 1
     end
 end
 
 
+---@package
+---@param self prolog.script
+---@param dt number
 function update(self, dt)
-    local camera_pos = go.get_position("/camera#camera")
-    camera_pos.z = camera_pos.z + 1
-    go.set_position(camera_pos, "/camera#camera")
+    msg.post("@render:", "draw_debug_text",
+        { text = "ARROWS - MOVE, Q - ZOOM IN/OUT, ENEMIES COUNT: " .. hero_state["ENEMIES_COUNTER"], position = vmath.vector3(200, 1200, C.OBECTS_Z_INDEX), color = vmath.vector4(1, 0, 0, 1) })
 end

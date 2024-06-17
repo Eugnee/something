@@ -11,16 +11,16 @@ local OFFSET = 10
 ---@param id string|hash|url|nil
 function position.set_iso_position(new_pos, z_index, id)
     new_pos.z = z_index - (new_pos.y * C.MIN_STEP)
-    if new_pos.x > MAP_WIDTH - OFFSET then
-        new_pos.x = MAP_WIDTH - OFFSET
-    elseif new_pos.x < OFFSET then
-        new_pos.x = OFFSET
-    end
-    if new_pos.y > MAP_HEIGHT - OFFSET then
-        new_pos.y = MAP_HEIGHT - OFFSET
-    elseif new_pos.y < OFFSET then
-        new_pos.y = OFFSET
-    end
+    -- if new_pos.x > MAP_WIDTH - OFFSET then
+    --     new_pos.x = MAP_WIDTH - OFFSET
+    -- elseif new_pos.x < OFFSET then
+    --     new_pos.x = OFFSET
+    -- end
+    -- if new_pos.y > MAP_HEIGHT - OFFSET then
+    --     new_pos.y = MAP_HEIGHT - OFFSET
+    -- elseif new_pos.y < OFFSET then
+    --     new_pos.y = OFFSET
+    -- end
     go.set_position(new_pos, id)
 end
 

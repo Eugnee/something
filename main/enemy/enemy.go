@@ -1,6 +1,6 @@
 components {
   id: "unit"
-  component: "/scripts/unit.script"
+  component: "/scripts/enemy/enemy.script"
   position {
     x: 0.0
     y: 0.0
@@ -21,8 +21,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"default\"\n"
-  "mask: \"default\"\n"
+  "group: \"enemy\"\n"
+  "mask: \"hero\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -41,9 +41,9 @@ embedded_components {
   "    count: 3\n"
   "    id: \"\"\n"
   "  }\n"
-  "  data: 10.0\n"
-  "  data: 10.0\n"
-  "  data: 10.0\n"
+  "  data: 20.0\n"
+  "  data: 20.0\n"
+  "  data: 20.0\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"

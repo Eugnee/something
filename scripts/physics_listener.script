@@ -1,13 +1,9 @@
-local OM = require "scripts.logic.gobject"
-
+local CH = require "scripts.collision_handlers"
 
 local function physics_world_listener(self, event, data)
     if event == hash("contact_point_event") then
-        local a = OM.get_unit(data.a.id)
-        local b = OM.get_unit(data.b.id)
-        a.speed = a.speed + 0.1
-        -- a.position = a.position + data.distance * a.position
-        -- b.position = b.position + data.distance * b.position
+        CH.point_response(data.a, data.b)
+        -- pprint(data)
     elseif event == hash("collision_event") then
         -- Handle general collision data
         -- pprint(data)

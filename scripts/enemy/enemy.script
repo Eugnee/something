@@ -1,18 +1,24 @@
 local OM = require "scripts.logic.gobject"
 local utils = require "scripts.lib.utils"
+local hero_state = require "scripts.logic.hero"
 
 function init(self)
     OM.create_gobject(self)
     self.speed = 1
     self.hp = 30
     self.dt = 0
+    self.hero_touchs_count = 0
 end
 
 function final(self)
     OM.delete_gobject()
+    hero_state["ENEMIES_COUNTER"] = hero_state["ENEMIES_COUNTER"] - 1
 end
 
 function update(self, dt)
+    if self.hp <= 0 then
+        go.delete()
+    end
     local position = go.get_position()
     if not self.destination then
         self.destination = utils.random_pos(100)
