@@ -29,3 +29,22 @@ function update(self, dt)
     end
     go.set_position(position + self.destination * dt * self.speed)
 end
+
+---@package
+---@param self enemy.script
+---@param message_id hash
+---@param message table
+---@param sender url
+function on_message(self, message_id, message, sender)
+    if message_id == M.CONTACT_POINT_RESPONSE then
+        go.set_position(go.get_position() + message.normal * 10)
+        if message.other_group == hash("hero") then
+            self.hero_touchs_count = self.hero_touchs_count + 1
+            if self.hero_touchs_count % 10 == 0 then
+                local hero_data = OM.get_gobject(message.other_id)
+                print("Why do you beat me?")
+                self.hp = self.hp - hero_data.damage
+            end
+        end
+    end
+end
