@@ -1,5 +1,8 @@
-local OM = require "scripts.logic.gobject"
 local position = require "scripts.lib.position"
+local utils = require "scripts.lib.utils"
+
+-- local AIM_URL = msg.url(nil, nil, "aim")
+local AIM_URL = "aim"
 
 function init(self)
     self.hp = 100
@@ -9,6 +12,7 @@ function init(self)
     msg.post(".", M.ACQUIRE_INPUT_FOCUS)
     self.direction = vmath.vector3(0, 0, 0)
     self.prev_direction = vmath.vector3(0, -1, 0)
+    self.aim = vmath.vector3()
     self.current_animation = nil
     self.correction = vmath.vector3()
     self.locked_anim = false
@@ -31,6 +35,13 @@ local function finalize_update(self)
 end
 
 function update(self, dt)
+    -- aim
+    local cursor_pos = utils.screen_to_world(self.aim, "camera#camera")
+    self.cursor_pos = vmath.lerp(0.5, go.get_position(), cursor_pos)
+
+    -- cursor original pos for aim
+    cursor_pos.z = C.OBECTS_Z_INDEX + 0.1
+    go.set_position(cursor_pos, AIM_URL)
     if self.is_moving then
         local p = go.get_position()
         position.set_iso_position(p + vmath.normalize(self.direction) * self.speed * dt, C.OBECTS_Z_INDEX)
@@ -39,10 +50,26 @@ function update(self, dt)
     finalize_update(self)
 end
 
+local function spawn_bullet(self)
+    local start_pos = go.get_world_position()
+    local direction = self.cursor_pos - start_pos
+    local angle = -math.atan2(direction.x, direction.y)
+    local quat = vmath.quat_rotation_z(angle)
+    local pos = start_pos + vmath.rotate(quat, C.BULLET_OFFSET) * 10
+    pos.z = C.OBECTS_Z_INDEX
+    factory.create(C.BULLET_FACTORY, pos, quat,
+        { damage = self.damage, speed = 30 })
+end
+
 function on_input(self, action_id, action)
+    self.aim.x = action.x
+    self.aim.y = action.y
     if action.pressed then
         -- actions only if pressed
-        if action_id == hash("zoom") then
+        if action_id == C.FIRE then
+            spawn_bullet(self)
+            self.attacking = true
+        elseif action_id == hash("zoom") then
             if self.zoomed_in then
                 self.zoomed_in = false
                 go.set("camera#camera", "orthographic_zoom", 1.0)

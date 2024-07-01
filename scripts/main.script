@@ -1,6 +1,9 @@
 -- some glogal things here
 C = require "scripts.constants"
 M = require "scripts.messages"
+
+-- we use object manager a lot, so better have it glogal
+OM = require "scripts.logic.gobject"
 math.randomseed(socket.gettime())
 
 local function unload_level(self)

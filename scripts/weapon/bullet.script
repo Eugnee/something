@@ -1,0 +1,37 @@
+local LIFETIME = 3
+local hero_state = require "scripts.logic.hero"
+
+function init(self)
+	self.speed = hero_state.bullet_speed
+	self.damage = hero_state.bullet_damage
+	self.counter = 0
+	-- sound.play("/main#shot")
+	self.lifetime = 0
+end
+
+function update(self, dt)
+	if self.lifetime > LIFETIME then
+		go.delete()
+		return
+	end
+	self.lifetime = self.lifetime + dt
+	local pos = go.get_position()
+	local d = vmath.rotate(go.get_rotation(), C.BULLET_ROTATION)
+	pos = pos + d * self.speed * dt
+	go.set_position(pos)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == M.CONTACT_POINT_RESPONSE
+	then
+		if self.counter == 0 then
+			local other = OM.get_gobject(message.other_id)
+			other.hp = other.hp - self.damage
+			-- msg.post(C.SPRITE, M.DISABLE)
+		end
+		self.counter = self.counter + 1
+		if self.counter > 5 then
+			go.delete()
+		end
+	end
+end

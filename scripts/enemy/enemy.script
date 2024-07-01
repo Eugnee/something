@@ -5,7 +5,7 @@ local hero_state = require "scripts.logic.hero"
 function init(self)
     OM.create_gobject(self)
     self.speed = 1
-    self.hp = 30
+    self.hp = 90
     self.dt = 0
     self.hero_touchs_count = 0
 end

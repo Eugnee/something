@@ -28,7 +28,7 @@ C.BULLET_OFFSET = vmath.vector3(0, 5, 0)
 C.UP_DIRECTION = vmath.vector3(0, 1, 0)
 
 -- ACTIONS
-C.FIRE = hash("attack")
+C.FIRE = hash("fire")
 C.LEFT = hash("left")
 C.UP = hash("up")
 C.RIGHT = hash("right")
@@ -36,6 +36,8 @@ C.DOWN = hash("down")
 C.TALK = hash("talk")
 
 -- ITEMS
+C.BULLET_OFFSET = vmath.vector3(0, 5, 0)
+C.BULLET_ROTATION = vmath.vector3(0, 1, 0)
 
 -- GOBJECTS
 C.PLAYER = hash("player")
@@ -45,5 +47,8 @@ C.ENEMY = hash("enemy")
 C.MAP_WIDTH = 500
 C.MAP_HEIGHT = 500
 C.MAP_OFFSET = 10
+
+-- FACTORIES
+C.BULLET_FACTORY = "/base/factories#bullet"
 
 return C
